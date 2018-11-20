@@ -1,0 +1,16 @@
+.textSection {
+  width: 200px;
+  height: 23px;
+  border: 1px solid black;
+}
+
+.numberSection {
+  width: 25px;
+  height: 23px;
+  border: 1px solid black;
+}
+
+.button {
+  width: 25px;
+  height: 25px;
+}
