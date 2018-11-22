@@ -6,10 +6,12 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var votes = [];
+
 function GenericButton(props) {
   return React.createElement(
     'button',
-    { 'class': props.class, onClick: props.submitHandler },
+    { 'class': props.class, onClick: props.handler },
     props.value
   );
 }
@@ -18,8 +20,8 @@ function TextInput(props) {
   return React.createElement(
     'div',
     null,
-    React.createElement('input', { submitHandler: props.submitHandler }),
-    React.createElement(GenericButton, { value: 'Submit', submitHandler: props.submitHandler })
+    React.createElement('input', { onChange: props.inputHandler }),
+    React.createElement(GenericButton, { value: 'Submit', handler: props.handler })
   );
 }
 
@@ -33,7 +35,7 @@ function VoteSection(props) {
   return React.createElement(
     'div',
     { style: style },
-    React.createElement(GenericButton, { value: 'x', 'class': 'button' }),
+    React.createElement(GenericButton, { value: 'x', 'class': 'button', handler: props.handler }),
     React.createElement(
       'p',
       { 'class': 'textSection' },
@@ -55,7 +57,8 @@ function MainSection(props) {
     null,
     props.listItem.map(function (item) {
       return React.createElement(VoteSection, { text: item.text,
-        number: item.number });
+        number: item.number,
+        handler: props.handler });
     })
   );
 }
@@ -68,17 +71,31 @@ var VoteOnIt = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (VoteOnIt.__proto__ || Object.getPrototypeOf(VoteOnIt)).call(this, props));
 
-    _this.state = { text: '',
-      number: 0,
-      list: [] };
+    _this.state = { list: [],
+      text: '',
+      number: 0 };
     _this.submitHandler = _this.submitHandler.bind(_this);
+    _this.inputHandler = _this.inputHandler.bind(_this);
+    _this.removeItem = _this.removeItem.bind(_this);
     return _this;
   }
 
   _createClass(VoteOnIt, [{
+    key: 'removeItem',
+    value: function removeItem(e) {
+      e.target.parentNode.remove();
+    }
+  }, {
+    key: 'inputHandler',
+    value: function inputHandler(e) {
+      // text = e.target.value
+      this.setState({ text: e.target.value });
+    }
+  }, {
     key: 'submitHandler',
     value: function submitHandler() {
-      this.setState({ list: [] });
+      votes.push({ text: this.state.text, number: this.state.number });
+      this.setState({ list: votes });
     }
   }, {
     key: 'render',
@@ -86,8 +103,9 @@ var VoteOnIt = function (_React$Component) {
       return React.createElement(
         'div',
         null,
-        React.createElement(TextInput, { submitHandler: this.submitHandler }),
-        React.createElement(MainSection, { listItem: this.state.list })
+        React.createElement(TextInput, { handler: this.submitHandler,
+          inputHandler: this.inputHandler }),
+        React.createElement(MainSection, { listItem: this.state.list, handler: this.removeItem })
       );
     }
   }]);
