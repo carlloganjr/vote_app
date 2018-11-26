@@ -2,12 +2,14 @@
   width: 200px;
   height: 23px;
   border: 1px solid black;
+  text-indent: .5em;
 }
 
 .numberSection {
   width: 25px;
   height: 23px;
   border: 1px solid black;
+  text-align: center;
 }
 
 .button {
