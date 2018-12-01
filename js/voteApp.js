@@ -8,6 +8,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var votes = [];
 
+/*
+ * Generic button component
+ * @param class   accepts a class for styling
+ * @param handler accepts an event handler
+ * @param value   accepts text for the inner HTML
+ */
 function GenericButton(props) {
   return React.createElement(
     'button',
